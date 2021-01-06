@@ -42,7 +42,7 @@ const Game = () => {
       <p className="Game__format-example">
         { exampleFormat }
       </p>
-      { submission.length === 0 ? '' : <RecentSubmission submission={submission[submission.length - 1]} /> }
+      { submission.length === 0 || isSubmitted ? '' : <RecentSubmission submission={submission[submission.length - 1]} /> }
       
       { isSubmitted ?  '' : <PlayerSubmissionForm index={player} fields={FIELDS} sendSubmission={ addPoemLine } /> }
       

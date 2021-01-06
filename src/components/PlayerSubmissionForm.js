@@ -37,13 +37,19 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
 
   };
 
+  const inputValid = (input) => {
+    return input !== '' // return true if valid, else false if empty string
+  }
+
   const inputBoxes = fields.map((field, i) => {
-    if (field.placeholder) {
-      return <input key={i} name={field.key} placeholder={field.placeholder} onChange={onInputChange} value={wordFields[field.key]} type="text" />
+    if (field.key) {
+      return <input key={i} name={field.key} placeholder={field.placeholder} onChange={onInputChange} value={wordFields[field.key]} type="text" className={inputValid(wordFields[field.key]) ? 'valid' : 'PlayerSubmissionFormt__input--invalid'} />
     } else {
       return <div key={i}>{field}</div>
     }
   })
+
+
 
   return (
     <div className="PlayerSubmissionForm">
