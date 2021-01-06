@@ -10,7 +10,6 @@ const Game = () => {
   const [player, setPlayer] = useState(1);
   const [isSubmitted, setSubmissionStatus] = useState(false)
   const [submission, setSubmission] = useState([])
-  const [mostRecent, setMostRecent] = useState('')
 
   const exampleFormat = FIELDS.map((field) => {
     if (field.key) {
@@ -20,18 +19,16 @@ const Game = () => {
     }
   }).join(' ');
 
+  const completePoem = () => {
+    setSubmissionStatus( !isSubmitted ) //toggle is submitted to true
+  }
+
   const addPoemLine = (line) => {
-    console.log(line)
-    // string should be built, add to submissions
-    
     const newSubmissionList = [...submission];
     newSubmissionList.push(line)
     
     setSubmission(newSubmissionList)
-
     setPlayer(player + 1)
-
-    
   }
 
   return (
@@ -45,12 +42,11 @@ const Game = () => {
       <p className="Game__format-example">
         { exampleFormat }
       </p>
-
-      <RecentSubmission />
-
-      <PlayerSubmissionForm index={player} fields={FIELDS} sendSubmission={ addPoemLine } />
-
-      <FinalPoem />
+      { submission.length === 0 ? '' : <RecentSubmission submission={submission[submission.length - 1]} /> }
+      
+      { isSubmitted ?  '' : <PlayerSubmissionForm index={player} fields={FIELDS} sendSubmission={ addPoemLine } /> }
+      
+      <FinalPoem submissions={submission} isSubmitted={isSubmitted} revealPoem={completePoem} />
 
     </div>
   );

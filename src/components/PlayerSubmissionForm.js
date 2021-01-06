@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import './PlayerSubmissionForm.css';
 
-//props: player #, fields, sendSubmission callback function
-
 const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
-  const [wordFields, setWordFields] = useState({
-    adj1: '',
-    noun1: '',
-    adverb: '',
-    verb: '',
-    adj2: '',
-    noun2: '',
-  });
+  let emptyBoxes = {}
+  for (let i = 0; i < fields.length; i++) {
+    if (fields[i].key) {
+      emptyBoxes[fields[i].key] = ''
+    }
+  }
+
+  const [wordFields, setWordFields] = useState(emptyBoxes);
 
   const onInputChange = event => {
     const newWordFields = {
@@ -28,26 +25,25 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
     event.preventDefault();
 
     const poemLine = fields.map((field) => {
-      const newLine = {...wordFields};
       if (field.key) {
-        return newLine[field.key]
+        return wordFields[field.key]
       } else {
         return field
       }
     }).join(' ');
 
     sendSubmission(poemLine);
+    setWordFields(emptyBoxes);
 
-    setWordFields({
-      adj1: '',
-      noun1: '',
-      adverb: '',
-      verb: '',
-      adj2: '',
-      noun2: '',
-    });
   };
 
+  const inputBoxes = fields.map((field, i) => {
+    if (field.placeholder) {
+      return <input key={i} name={field.key} placeholder={field.placeholder} onChange={onInputChange} value={wordFields[field.key]} type="text" />
+    } else {
+      return <div key={i}>{field}</div>
+    }
+  })
 
   return (
     <div className="PlayerSubmissionForm">
@@ -57,64 +53,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
 
         <div className="PlayerSubmissionForm__poem-inputs">
 
-          {/* {
-            fields.map(field => (
-              if (field.placeholder) {
-                
-              }
-            ))
-          } */}
-
-            The 
-            <input
-              name="adj1"
-              placeholder="adjective1"
-              onChange={onInputChange}
-              value={wordFields.adj1}
-              type="text" 
-            /> 
-            
-            <input
-              name="noun1"
-              placeholder="noun1"
-              onChange={onInputChange}
-              value={wordFields.noun1}
-              type="text" 
-            /> 
-            
-            <input
-              name="adverb"
-              placeholder="adverb1" 
-              onChange={onInputChange}
-              value={wordFields.adverb}
-              type="text" 
-            /> 
-            
-            <input
-              name="verb"
-              placeholder="verb1"
-              onChange={onInputChange}
-              value={wordFields.verb}
-              type="text" 
-            /> 
-            the 
-            
-            <input
-              name="adj2"
-              placeholder="adjective2"
-              onChange={onInputChange}
-              value={wordFields.adj2}
-              type="text" 
-            /> 
-            
-            <input
-              name="noun2"
-              placeholder="noun2"
-              onChange={onInputChange}
-              value={wordFields.noun2}
-              type="text" 
-            />.
-          
+          {inputBoxes}          
 
         </div>
 

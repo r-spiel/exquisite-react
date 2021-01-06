@@ -2,20 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './FinalPoem.css';
 
-const FinalPoem = (props) => {
+const FinalPoem = ({isSubmitted, submissions, revealPoem}) => {
+  // can only call the revealPoem call back if submissions is not empty?? 
 
-  return (
-    <div className="FinalPoem">
-      <section className="FinalPoem__poem">
-        <h3>Final Poem</h3>
+  const poemLines = submissions.map((line, i) => {
+    return (
+      <p key={i}>{line}</p>
+    )
+  })
 
-      </section>
+  if ( isSubmitted ) {
+    return (
+      <div className="FinalPoem">
+        <section className="FinalPoem__poem">
+          <h3>Final Poem</h3>
 
-      <div className="FinalPoem__reveal-btn-container">
-        <input type="button" value="We are finished: Reveal the Poem" className="FinalPoem__reveal-btn" />
+          {poemLines}
+        </section>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="FinalPoem">
+  
+        <div className="FinalPoem__reveal-btn-container">
+          <input type="button" value="We are finished: Reveal the Poem" className="FinalPoem__reveal-btn" onClick={revealPoem} />
+        </div>
+      </div>
+    );
+  }
+
+
 }
 
 FinalPoem.propTypes = {
