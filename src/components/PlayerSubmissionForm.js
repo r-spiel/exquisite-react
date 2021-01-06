@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './PlayerSubmissionForm.css';
 
-//props: player #
+//props: player #, fields, sendSubmission callback function
 
 const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
   const [wordFields, setWordFields] = useState({
@@ -24,23 +24,51 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
     setWordFields(newWordFields);
   };
 
-  // const onFormSubmit = event => {
+  const onFormSubmit = event => {
+    event.preventDefault();
 
-  // }
+    const poemLine = fields.map((field) => {
+      const newLine = {...wordFields};
+      if (field.key) {
+        return newLine[field.key]
+      } else {
+        return field
+      }
+    }).join(' ');
+
+    sendSubmission(poemLine);
+
+    setWordFields({
+      adj1: '',
+      noun1: '',
+      adverb: '',
+      verb: '',
+      adj2: '',
+      noun2: '',
+    });
+  };
 
 
   return (
     <div className="PlayerSubmissionForm">
-      <h3>Player Submission Form for Player #{  }</h3>
+      <h3>Player Submission Form for Player #{index}</h3>
 
-      <form className="PlayerSubmissionForm__form" >
+      <form className="PlayerSubmissionForm__form" onSubmit={onFormSubmit} >
 
         <div className="PlayerSubmissionForm__poem-inputs">
+
+          {/* {
+            fields.map(field => (
+              if (field.placeholder) {
+                
+              }
+            ))
+          } */}
 
             The 
             <input
               name="adj1"
-              placeholder="adjective"
+              placeholder="adjective1"
               onChange={onInputChange}
               value={wordFields.adj1}
               type="text" 
@@ -48,7 +76,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
             
             <input
               name="noun1"
-              placeholder="noun"
+              placeholder="noun1"
               onChange={onInputChange}
               value={wordFields.noun1}
               type="text" 
@@ -56,7 +84,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
             
             <input
               name="adverb"
-              placeholder="adverb" 
+              placeholder="adverb1" 
               onChange={onInputChange}
               value={wordFields.adverb}
               type="text" 
@@ -64,7 +92,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
             
             <input
               name="verb"
-              placeholder="verb"
+              placeholder="verb1"
               onChange={onInputChange}
               value={wordFields.verb}
               type="text" 
@@ -73,7 +101,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
             
             <input
               name="adj2"
-              placeholder="adjective"
+              placeholder="adjective2"
               onChange={onInputChange}
               value={wordFields.adj2}
               type="text" 
@@ -81,7 +109,7 @@ const PlayerSubmissionForm = ({fields, index, sendSubmission}) => {
             
             <input
               name="noun2"
-              placeholder="noun"
+              placeholder="noun2"
               onChange={onInputChange}
               value={wordFields.noun2}
               type="text" 

@@ -4,7 +4,14 @@ import PlayerSubmissionForm from './PlayerSubmissionForm';
 import FinalPoem from './FinalPoem';
 import RecentSubmission from './RecentSubmission';
 
+
 const Game = () => {
+  
+  const [player, setPlayer] = useState(1);
+  const [isSubmitted, setSubmissionStatus] = useState(false)
+  const [submission, setSubmission] = useState([])
+  const [mostRecent, setMostRecent] = useState('')
+
   const exampleFormat = FIELDS.map((field) => {
     if (field.key) {
       return field.placeholder;
@@ -12,6 +19,20 @@ const Game = () => {
       return field;
     }
   }).join(' ');
+
+  const addPoemLine = (line) => {
+    console.log(line)
+    // string should be built, add to submissions
+    
+    const newSubmissionList = [...submission];
+    newSubmissionList.push(line)
+    
+    setSubmission(newSubmissionList)
+
+    setPlayer(player + 1)
+
+    
+  }
 
   return (
     <div className="Game">
@@ -27,7 +48,7 @@ const Game = () => {
 
       <RecentSubmission />
 
-      <PlayerSubmissionForm />
+      <PlayerSubmissionForm index={player} fields={FIELDS} sendSubmission={ addPoemLine } />
 
       <FinalPoem />
 
