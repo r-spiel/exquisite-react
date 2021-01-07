@@ -31,8 +31,6 @@ const FinalPoem = ({isSubmitted, submissions, revealPoem}) => {
       </div>
     );
   }
-
-
 }
 
 FinalPoem.propTypes = {
